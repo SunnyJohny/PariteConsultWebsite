@@ -19,7 +19,7 @@ const AboutUs = () => {
           {/* Image Section */}
           <div>
             <img
-              src="/images/FB_IMG_1739522405045.jpg"
+              src="/images/construction1.jpg"
               alt="Solar Solutions"
               className="w-full h-auto rounded-lg shadow-lg object-cover"
             />
