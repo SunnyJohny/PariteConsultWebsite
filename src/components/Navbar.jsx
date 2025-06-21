@@ -58,15 +58,15 @@ const Navbar = () => {
   return (
     <header className="fixed w-full z-10000002 transition-all duration-300">
       <nav
-        className={`py-4 lg:px-24 px-4 ${isSticky ? "bg-dark shadow-lg" : "bg-transparent"}`}
+        className={`py-4 lg:px-24 px-4 ${isSticky ? "bg-light shadow-lg" : "bg-transparent"}`}
       >
         <div className="flex z-10000002 justify-between items-center text-base relative">
           {/* Logo */}
           <a href="/" className="flex items-center">
             <img
-              src="/images/pariteconsultLogoCorrect.png"
+              src="/images/paritechosenLogo-removebg-preview.png"
               alt="Logo"
-              className="h-10 md:h-12 lg:h-14 w-auto"
+              className="h-20 md:h-24 lg:h-28 w-auto"
             />
           </a>
 
