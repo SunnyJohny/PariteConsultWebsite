@@ -58,7 +58,8 @@ const Navbar = () => {
   return (
     <header className="fixed w-full z-10000002 transition-all duration-300">
       <nav
-        className={`py-4 lg:px-24 px-4 ${isSticky ? "bg-light shadow-lg" : "bg-transparent"}`}
+        className={`py-4 lg:px-24 px-4 ${isSticky ? "bg-white shadow-lg" : "bg-transparent backdrop-blur-sm"}`}
+
       >
         <div className="flex z-10000002 justify-between items-center text-base relative">
           {/* Logo */}
@@ -73,12 +74,13 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <ul className="hidden md:flex space-x-8">
             {navItems.map(({ link, path }) => (
-              <a
-                key={link}
-                href={`#${path}`}
-                onClick={(e) => handleScrollAdjust(e, path)}
-                className="text-base uppercase text-white hover:text-orange cursor-pointer"
-              >
+             <a
+  key={link}
+  href={`#${path}`}
+  onClick={(e) => handleScrollAdjust(e, path)}
+  className="text-base uppercase text-[#181818] hover:text-orange cursor-pointer"
+>
+
                 {link}
               </a>
             ))}

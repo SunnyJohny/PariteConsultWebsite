@@ -13,7 +13,7 @@ const quickLinks = [
   { link: "Home", path: "home" },
   { link: "About", path: "about" },
   { link: "Services", path: "services" },
-  { link: "Products", path: "Equipment" },
+  { link: "Projects", path: "Equipment" },
   // { link: "Blog", path: "blogs" },
   { link: "Contact", path: "contact" },
 ];

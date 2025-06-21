@@ -20,7 +20,8 @@ function App() {
       <SearchBar products={equipmentData} />
 
       {/* Main Content */}
-      <div className="bg-[#181818] mt-[80px]"> {/* Ensure Navbar is below SearchBar */}
+      <div className="bg-[#7252FF] mt-[80px]">
+ {/* Ensure Navbar is below SearchBar */}
         <Navbar />
         <Hero />
         <Equipment />
