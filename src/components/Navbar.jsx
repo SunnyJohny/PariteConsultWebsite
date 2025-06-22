@@ -58,7 +58,7 @@ const Navbar = () => {
   return (
     <header className="fixed w-full z-10000002 transition-all duration-300">
       <nav
-        className={`py-4 lg:px-24 px-4 ${isSticky ? "bg-white shadow-lg" : "bg-transparent backdrop-blur-sm"}`}
+        className={`py-4 lg:px-24 px-4 ${isSticky ? "bg-white shadow-lg" : "bg-white "}`}
 
       >
         <div className="flex z-10000002 justify-between items-center text-base relative">
@@ -90,7 +90,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-white p-2 rounded-full border border-gray-500 focus:outline-none ml-2 mr-2"
+              className="text-blue p-2 rounded-full border border-gray-500 focus:outline-none ml-2 mr-2"
             >
               {isMenuOpen ? (
                 <FaXmark className="h-6 w-6 text-primary" />
