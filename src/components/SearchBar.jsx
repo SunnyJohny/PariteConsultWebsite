@@ -53,7 +53,7 @@ const SearchBar = ({ onSearch }) => {
             onChange={handleInputChange}
             onFocus={() => setIsFocused(true)} // Set focus state to true
             onBlur={() => setIsFocused(false)} // Set focus state to false
-            placeholder="Search products here"
+            placeholder="Search designs/projects here"
             className="flex-grow bg-transparent border-none outline-none text-gray-700 px-4"
           />
           <button

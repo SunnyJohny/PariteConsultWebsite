@@ -128,6 +128,52 @@ const AboutUs = () => {
     We are proud that over 80% of our business comes from referrals from satisfied clients.
   </p>
 </div>
+{/* Testimonials Section */}
+<div id="testimonials">
+  <h3 className="text-2xl font-bold text-gray-800 text-center uppercase tracking-wide m-8">
+    What Our Clients Say
+  </h3>
+  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+    {[
+      {
+        name: "Engr. Michael Okafor",
+        title: "Project Director, NNPC",
+        phone: "0803 456 7890",
+        image: "/images/testimonial1.jpg",
+        quote:
+          "Working with PARITE CONSULTS NIG was an outstanding experience. Their commitment to safety, quality, and delivery timelines was exceptional. I recommend them for any high-value infrastructure project.",
+      },
+      {
+        name: "Mrs. Ngozi Umeh",
+        title: "CEO, UrbanSpace Properties",
+        phone: "0812 345 6789",
+        image: "/images/testimonial2.jpg",
+        quote:
+          "From feasibility studies to project execution, the team showed deep industry knowledge. They transformed our property into a modern, functional, and aesthetic space.",
+      },
+      {
+        name: "Dr. Suleiman Bello",
+        title: "Director, Ministry of Works",
+        phone: "0706 123 4567",
+        image: "/images/testimonial3.jpg",
+        quote:
+          "Their dedication and professionalism stood out. Every detail of our public facility project was handled with care, precision, and passion.",
+      },
+    ].map((testimonial, index) => (
+      <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+        <img
+          src={testimonial.image}
+          alt={testimonial.name}
+          className="w-16 h-16 rounded-full object-cover mb-4"
+        />
+        <p className="text-gray-700 italic mb-4">“{testimonial.quote}”</p>
+        <h4 className="text-lg font-semibold text-gray-800">{testimonial.name}</h4>
+        <p className="text-sm text-gray-500">{testimonial.title}</p>
+        <p className="text-sm text-gray-600">📞 {testimonial.phone}</p>
+      </div>
+    ))}
+  </div>
+</div>
 
       </div>
     </section>

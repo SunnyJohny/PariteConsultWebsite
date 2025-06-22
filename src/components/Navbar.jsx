@@ -50,7 +50,7 @@ const Navbar = () => {
     { link: "Home", path: "home" },
     { link: "About", path: "about" },
     { link: "Services", path: "services" },
-    { link: "Gallery", path: "Equipment" },
+    { link: "Testimonials", path: "testimonials" },
     { link: "Projects", path: "Equipment" },
     { link: "Contact", path: "contact" },
   ];
@@ -111,7 +111,7 @@ const Navbar = () => {
             {/* Logo */}
             <a href="/" className="flex items-center">
               <img
-                src="/images/Group 4 (2).png"
+                src="/images/paritechosenLogo-removebg-preview.png"
                 alt="Logo"
                 className="h-8"
               />

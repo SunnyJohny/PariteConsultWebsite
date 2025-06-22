@@ -61,7 +61,7 @@ const Equipment = () => {
             type="text"
             value={query}
             onChange={handleSearch}
-            placeholder="Search for equipment..."
+            placeholder="Search for designs/projects..."
             className="w-full p-3 pl-10 pr-4 border rounded-full bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500" />
