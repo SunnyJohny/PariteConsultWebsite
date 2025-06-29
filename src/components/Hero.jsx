@@ -54,7 +54,7 @@ const Hero = () => {
                     ⚡ Welcome to PARITE CONSULTS ⚡
                   </h3>
 
-                  <p className="text-[20px] text-white font-extrabold mt-6 px-4 lg:px-32">
+                  <p className="text-[20px] text-white font-extrabold mt-12 px-4 lg:px-32">
                     Delivering <span className="text-blue-500">Reliable</span>{" "}
                     Building Solutions &{" "}
                     <span className="text-blue-500">Top-Quality</span> Construction Services
@@ -94,28 +94,35 @@ const Hero = () => {
       </Swiper>
 
       {/* Additional Banner Content */}
-      <div className="px-4 lg:px-24 mt-8">
-        <h1 className="md:w-2/3 lg:text-8xl sm:text-6xl text-5xl mb-5 text-white font-bold lg:leading-snug sm:leading-snug leading-snug"></h1>
-        <div className="text-white text-lg flex flex-col-reverse md:flex-row md:items-center items-start justify-between gap-8">
-          <div>
-            <Link
-              to="contact"
-              smooth={true}
-              offset={-100}
-              duration={500}
-              className="inline-flex items-center gap-2 font-semibold hover:text-orange transition-all duration-300 cursor-pointer"
-            >
-              <span>Get a Quote</span>
-              <BsArrowRight />
-            </Link>
-          </div>
-          <div className="md:w-1/2">
-            <p className="cs-hero_subtitle">
-              Building the future with innovative design and quality construction solutions.
-            </p>
-          </div>
-        </div>
+     <div className="bg-black">
+  {/* Additional Banner Content */}
+  <div className="px-4 lg:px-24 mt-8">
+    <h1 className="md:w-2/3 lg:text-6xl md:text-5xl text-4xl mb-5 text-white font-semibold leading-snug">
+  Your Vision. Our Expertise.
+</h1>
+
+    <div className="text-white text-lg flex flex-col-reverse md:flex-row md:items-center items-start justify-between gap-8">
+      <div>
+       <a
+  href="https://wa.me/2348037668773"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 font-semibold hover:text-orange transition-all duration-300 cursor-pointer"
+>
+  <span>Get a Quote</span>
+  <BsArrowRight />
+</a>
+
       </div>
+      <div className="md:w-1/2">
+        <p className="cs-hero_subtitle">
+          Building the future with innovative design and quality construction solutions.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       {/* Scroll Arrow to Service Section */}
       <Link to="services" spy={true} smooth={true} className="cs-down_btn md:mt-20 mt-8">

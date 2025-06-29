@@ -1,43 +1,83 @@
-import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa"; // Search icon
-import equipmentData from "../data/equipmentData"; // Import your equipment data
+import React, { useState, useEffect } from "react";
+import { FaSearch, FaTrash, FaEdit, FaPlus } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { v4 as uuidv4 } from "uuid";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  query,
+  orderBy,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
 
 const Equipment = () => {
-  const [query, setQuery] = useState("");
-  const [filteredEquipment, setFilteredEquipment] = useState(equipmentData);
+  const [projects, setProjects] = useState([]);
+  const [filteredEquipment, setFilteredEquipment] = useState([]);
   const [visibleCount, setVisibleCount] = useState(6);
   const [selectedEquipment, setSelectedEquipment] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newProject, setNewProject] = useState({
+    name: "",
+    description: "",
+    image: null,
+  });
+  const [editingProjectId, setEditingProjectId] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const auth = getAuth();
 
-  // Utility function to capitalize initials of each word
-  const capitalizeWords = (text) => {
-    return text
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+    const unsub = onSnapshot(q, (snapshot) => {
+      const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setProjects(items);
+      setFilteredEquipment(items);
+    });
+    return unsub;
+  }, []);
+
+  const capitalizeWords = (text) =>
+    text
       .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
       .join(" ");
-  };
 
   const handleSearch = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-
-    if (value.trim() === "") {
-      setFilteredEquipment(equipmentData);
-    } else {
-      const results = equipmentData.filter((equipment) =>
-        equipment.name.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredEquipment(results);
-    }
-
+    const v = e.target.value;
+    setFilteredEquipment(
+      !v.trim()
+        ? projects
+        : projects.filter((p) =>
+            p.name.toLowerCase().includes(v.toLowerCase())
+          )
+    );
     setVisibleCount(6);
   };
 
-  const handleLoadMore = () => {
-    setVisibleCount((prevCount) => prevCount + 6);
-  };
+  const handleLoadMore = () => setVisibleCount((c) => c + 6);
 
-  const handleImageClick = (equipment) => {
-    setSelectedEquipment(equipment);
+  const handleImageClick = (p) => {
+    setSelectedEquipment(p);
     document.body.classList.add("overflow-hidden");
   };
 
@@ -46,101 +86,278 @@ const Equipment = () => {
     document.body.classList.remove("overflow-hidden");
   };
 
+  const handleInputChange = (e) =>
+    setNewProject((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0])
+      setNewProject((prev) => ({ ...prev, image: e.target.files[0] }));
+  };
+
+  const handleSubmitProject = async (e) => {
+    e.preventDefault();
+    const { name, description, image } = newProject;
+    if (!name || !description || (!image && !editingProjectId)) {
+      toast.error("All fields required");
+      return;
+    }
+
+    let loadingToastId;
+    try {
+      loadingToastId = toast.loading("Uploading project...");
+
+      let imageUrl = null;
+
+      if (image && typeof image !== "string") {
+        const storage = getStorage();
+        const filename = `${name}-${uuidv4()}`;
+        const storageRef = ref(storage, `projects/${filename}`);
+        const uploadTask = uploadBytesResumable(storageRef, image);
+
+        await new Promise((res, rej) =>
+          uploadTask.on("state_changed", null, rej, () => res())
+        );
+
+        imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+      }
+
+      if (editingProjectId) {
+        const docRef = doc(db, "projects", editingProjectId);
+        await updateDoc(docRef, {
+          name,
+          description,
+          ...(imageUrl && { image: imageUrl }),
+        });
+        toast.update(loadingToastId, {
+          render: "Project updated!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } else {
+        await addDoc(collection(db, "projects"), {
+          name,
+          description,
+          image: imageUrl,
+          createdAt: serverTimestamp(),
+        });
+        toast.update(loadingToastId, {
+          render: "Project added!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      }
+
+      setNewProject({ name: "", description: "", image: null });
+      setEditingProjectId(null);
+      setShowAddModal(false);
+    } catch (err) {
+      toast.update(loadingToastId, {
+        render: "Failed to upload project",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    }
+  };
+
+  const confirmDeleteToast = (project) => {
+    toast.info(
+      ({ closeToast }) => (
+        <div>
+          <p className="font-semibold mb-2">Delete "{project.name}"?</p>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => {
+                deleteProject(project);
+                toast.dismiss();
+              }}
+              className="bg-red-600 text-white px-3 py-1 rounded text-sm"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => toast.dismiss()}
+              className="bg-gray-300 text-black px-3 py-1 rounded text-sm"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+      }
+    );
+  };
+
+  const deleteProject = async (project) => {
+    try {
+      await deleteDoc(doc(db, "projects", project.id));
+
+      const storage = getStorage();
+      const fileRef = ref(storage, project.image);
+      await deleteObject(fileRef);
+
+      toast.success("Project deleted successfully");
+    } catch (error) {
+      console.warn("Delete error:", error.message);
+      toast.error("Failed to delete image or project.");
+    }
+  };
+
+  const handleEdit = (project) => {
+    setNewProject({
+      name: project.name,
+      description: project.description,
+      image: project.image,
+    });
+    setEditingProjectId(project.id);
+    setShowAddModal(true);
+  };
+
   return (
     <div id="Equipment" className="p-4 bg-gray-100 min-h-screen">
-      {/* Page Title */}
-      <h1 className="text-3xl font-bold text-center text-gray-700 mb-6">
-        Projects Gallery
-      </h1>
+      <ToastContainer />
+      <div className="flex justify-between mb-6">
+        <h1 className="text-3xl font-bold text-gray-700">Projects Gallery</h1>
+        {currentUser && (
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="bg-blue-500 text-white px-4 py-2 rounded-full flex items-center hover:bg-blue-600"
+          >
+            <FaPlus /> Add Project
+          </button>
+        )}
+      </div>
 
-
-      {/* Search Bar */}
       <div className="flex justify-center mb-6">
         <div className="relative w-full max-w-lg">
           <input
-            type="text"
-            value={query}
             onChange={handleSearch}
-            placeholder="Search for designs/projects..."
-            className="w-full p-3 pl-10 pr-4 border rounded-full bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Search projects..."
+            className="w-full p-3 pl-10 border rounded-full"
           />
           <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-500" />
         </div>
       </div>
 
-      {/* Equipment Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredEquipment.slice(0, visibleCount).length === 0 ? (
-          <p className="col-span-full text-center text-xl text-gray-500">
-            No equipment found.
+        {filteredEquipment.slice(0, visibleCount).map((p) => (
+          <div key={p.id} className="bg-white p-4 rounded shadow-lg">
+            <img
+              src={p.image}
+              alt={p.name}
+              onClick={() => handleImageClick(p)}
+              className="w-full h-48 object-cover rounded mb-2 cursor-pointer"
+            />
+            <h3 className="font-semibold">{capitalizeWords(p.name)}</h3>
+            <p className="text-gray-600 mb-2 line-clamp-2">{p.description}</p>
+            {currentUser && (
+              <div className="flex gap-4 mt-3 text-xl">
+                <FaEdit
+                  onClick={() => handleEdit(p)}
+                  className="text-blue-600 cursor-pointer hover:text-blue-800"
+                />
+                <FaTrash
+                  onClick={() => confirmDeleteToast(p)}
+                  className="text-red-600 cursor-pointer hover:text-red-800"
+                />
+              </div>
+            )}
+          </div>
+        ))}
+        {!filteredEquipment.length && (
+          <p className="col-span-full text-center text-gray-500">
+            No projects found.
           </p>
-        ) : (
-          filteredEquipment.slice(0, visibleCount).map((equipment) => (
-            <div
-              key={equipment.id}
-              className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 cursor-pointer"
-              onClick={() => handleImageClick(equipment)}
-            >
-              <img
-                src={equipment.image}
-                alt={equipment.name}
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-700 truncate">
-                {capitalizeWords(equipment.name)}
-              </h3>
-            </div>
-          ))
         )}
       </div>
 
-
-
-      {/* Load More Button */}
       {visibleCount < filteredEquipment.length && (
         <div className="flex justify-center mt-6">
           <button
             onClick={handleLoadMore}
-            className="px-6 py-2 border-2 border-green-400 text-green-400 bg-transparent rounded-full hover:bg-green-400 hover:text-white hover:scale-105 transition-transform duration-300 shadow-md"
-
+            className="px-6 py-2 border border-green-400 text-green-400 rounded-full hover:bg-green-400 hover:text-white"
           >
             Load More
           </button>
         </div>
       )}
 
-      {/* Modal */}
       {selectedEquipment && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-2xl w-full relative max-h-[90vh]">
-            {/* Close Button */}
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded shadow-lg max-w-xl w-full relative p-4">
             <button
-              className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
               onClick={closeModal}
+              className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center"
             >
-              &times;
+              ×
             </button>
+            <img
+              src={selectedEquipment.image}
+              alt={selectedEquipment.name}
+              className="w-full mb-4"
+            />
+            <h2 className="text-2xl font-bold">
+              {capitalizeWords(selectedEquipment.name)}
+            </h2>
+            <p>{selectedEquipment.description}</p>
+          </div>
+        </div>
+      )}
 
-            {/* Scrollable Content */}
-            <div className="overflow-auto max-h-[85vh]">
-              {/* Image */}
-              <img
-                src={selectedEquipment.image}
-                alt={selectedEquipment.name}
-                className="w-full cursor-pointer"
-                onClick={closeModal}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded shadow-lg max-w-md w-full relative p-6">
+            <button
+              onClick={() => {
+                setShowAddModal(false);
+                setEditingProjectId(null);
+                setNewProject({ name: "", description: "", image: null });
+              }}
+              className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center"
+            >
+              ×
+            </button>
+            <h2 className="text-xl font-bold mb-4">
+              {editingProjectId ? "Edit Project" : "Add New Project"}
+            </h2>
+            <form onSubmit={handleSubmitProject} className="space-y-4">
+              <input
+                name="name"
+                value={newProject.name}
+                onChange={handleInputChange}
+                placeholder="Project Name"
+                className="w-full border px-3 py-2"
+                required
               />
-
-              {/* Equipment Details */}
-              <div className="p-4">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  {capitalizeWords(selectedEquipment.name)}
-                </h2>
-                <p className="text-gray-600">
-                  {/* Detailed information about the selected equipment can go here. */}
-                </p>
-              </div>
-            </div>
+              <textarea
+                name="description"
+                value={newProject.description}
+                onChange={handleInputChange}
+                placeholder="Description"
+                className="w-full border px-3 py-2"
+                rows="3"
+                required
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+              >
+                {editingProjectId ? "Update Project" : "Save Project"}
+              </button>
+            </form>
           </div>
         </div>
       )}
