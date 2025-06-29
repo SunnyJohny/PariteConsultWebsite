@@ -1,5 +1,11 @@
 import React from "react";
-import { FaYoutube, FaWhatsapp, FaFacebook, FaLinkedin, FaTiktok } from "react-icons/fa";
+import {
+  FaYoutube,
+  FaWhatsapp,
+  FaFacebook,
+  FaLinkedin,
+  FaTiktok,
+} from "react-icons/fa";
 
 const socialMediaLinks = [
   { name: "YouTube", icon: <FaYoutube />, url: "#" },
@@ -14,7 +20,6 @@ const quickLinks = [
   { link: "About", path: "about" },
   { link: "Services", path: "services" },
   { link: "Projects", path: "Equipment" },
-  // { link: "Blog", path: "blogs" },
   { link: "Contact", path: "contact" },
 ];
 
@@ -23,7 +28,7 @@ const handleScrollAdjust = (e, path) => {
   const target = document.getElementById(path);
 
   if (target) {
-    const offset = 100; // Adjust this for sticky headers if necessary
+    const offset = 100;
     const elementPosition = target.offsetTop - offset;
 
     window.scrollTo({
@@ -43,9 +48,7 @@ const Footer = () => {
             <h2 className="text-xl font-bold mb-4">Contact Us</h2>
             <p>Email: odinakaikwueme@yahoo.com</p>
             <p>Phone: 08037668773 07083944442</p>
-            <p>
-              Address:  muodu quarters, Awka, Anambra State, Nigeria.
-            </p>
+            <p>Address: muodu quarters, Awka, Anambra State, Nigeria.</p>
           </div>
 
           {/* Quick Links */}
@@ -87,10 +90,13 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="mt-8 border-t border-gray-600 pt-4 text-center">
-        <p className="text-sm">
-  &copy; {new Date().getFullYear()} PARITE CONSULTS NIG - CAC NO: 2702539. All rights reserved.
-</p>
-
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} PARITE CONSULTS NIG - CAC NO:
+            2702539. All rights reserved.
+          </p>
+          <p className="text-xs italic text-gray-400 mt-2">
+            Web Developer: +2348030611606
+          </p>
         </div>
       </div>
     </footer>
