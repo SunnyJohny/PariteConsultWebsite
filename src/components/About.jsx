@@ -136,28 +136,20 @@ const AboutUs = () => {
   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
     {[
       {
-        name: "Engr. Michael Okafor",
-        title: "Project Director, NNPC",
-        phone: "0803 456 7890",
-        image: "/images/testimonial1.jpg",
+        name: "Sir Dr. Charles Mbelede",
+        title: "KSM,JP,FNSE",
+        phone: "",
+        image: "/images/SirDr.Charles.jpg",
         quote:
-          "Working with PARITE CONSULTS NIG was an outstanding experience. Their commitment to safety, quality, and delivery timelines was exceptional. I recommend them for any high-value infrastructure project.",
+          "PARITE CONSULTS NIG delivered beyond expectations. Their professionalism and integrity made our collaboration seamless and rewarding.",
       },
       {
-        name: "Mrs. Ngozi Umeh",
-        title: "CEO, UrbanSpace Properties",
-        phone: "0812 345 6789",
-        image: "/images/testimonial2.jpg",
+        name: "Sir Emmanuel Onyejekwe",
+        title: "KSM",
+        phone: "08033039680",
+        image: "/images/SirEmmanuelOnyejekwe.jpg",
         quote:
-          "From feasibility studies to project execution, the team showed deep industry knowledge. They transformed our property into a modern, functional, and aesthetic space.",
-      },
-      {
-        name: "Dr. Suleiman Bello",
-        title: "Director, Ministry of Works",
-        phone: "0706 123 4567",
-        image: "/images/testimonial3.jpg",
-        quote:
-          "Their dedication and professionalism stood out. Every detail of our public facility project was handled with care, precision, and passion.",
+          "Their engineering and project execution skills are top-notch. I highly recommend them to anyone seeking reliable and innovative solutions.",
       },
     ].map((testimonial, index) => (
       <div key={index} className="bg-white p-6 rounded-lg shadow-md">
@@ -174,6 +166,7 @@ const AboutUs = () => {
     ))}
   </div>
 </div>
+
 
       </div>
     </section>
