@@ -31,21 +31,28 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const handleScrollAdjust = (e, path) => {
-    e.preventDefault();
-    if (path === "profile") {
-      setShowSignInModal(true);
-      return;
-    }
+ const handleScrollAdjust = (e, path) => {
+  e.preventDefault();
 
-    const target = document.getElementById(path);
-    if (target) {
-      const offset = 100;
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: "smooth" });
-      if (isMenuOpen) setIsMenuOpen(false);
-    }
-  };
+  if (path === "profile") {
+    setShowSignInModal(true);
+    return;
+  }
+
+  if (path === "business-card") {
+    setShowBusinessCard(true);
+    return;
+  }
+
+  const target = document.getElementById(path);
+  if (target) {
+    const offset = 100;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: "smooth" });
+    if (isMenuOpen) setIsMenuOpen(false);
+  }
+};
+
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -90,9 +97,13 @@ const Navbar = () => {
     { link: "Projects", path: "Equipment" },
     { link: "Profile", path: "profile" },
     { link: "Contact", path: "contact" },
+    // { link: "Business Card", path: "business-card" },
+
   ];
 
   const username = currentUser?.email?.split("@")[0];
+  // const [showBusinessCard, setShowBusinessCard] = useState(false);
+
 
   return (
     <>
@@ -224,6 +235,64 @@ const Navbar = () => {
           </div>
         </nav>
       </header>
+      {/* {showBusinessCard && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+    <div className="bg-white p-6 rounded-md w-[95%] md:w-[800px] relative max-h-screen overflow-auto">
+      <button
+        onClick={() => setShowBusinessCard(false)}
+        className="absolute top-2 right-2 text-red-600 font-bold text-lg"
+      >
+        ✖
+      </button>
+
+    
+      <div className="flex flex-col md:flex-row gap-6 items-center justify-center bg-gray-100 min-h-fit">
+       Front Side  
+        <div className="bg-white w-[350px] h-[200px] shadow-xl rounded-lg p-4 flex flex-col justify-between border border-gray-200">
+          <div className="flex items-center gap-2">
+            <img
+              src="/images/paritechosenLogo-removebg-preview.png"
+              alt="Logo"
+              className="w-16 h-16 object-contain"
+            />
+            <div>
+              <h2 className="text-lg font-bold text-gray-800">Engr. ODINAKA IKWUEME</h2>
+              
+            </div>
+          </div>
+          <div className="text-sm text-gray-700 mt-2 space-y-1">
+            <p>📞 08037668773 | 07082044442</p>
+            <p>✉️ odinakaikwueme@yahoo.com</p>
+            <p>📍 Muodu Quarters, Awka, Anambra State</p>
+          </div>
+      <div className="mt-2 text-sm font-medium px-2 py-1 rounded" style={{ backgroundColor: '#1f2937', color: 'white' }}>
+  🌐 www.pariteconsults.com.ng
+</div>
+
+
+        </div>
+
+        Back Side
+        <div className="bg-white w-[350px] h-[200px] shadow-xl rounded-lg p-4 flex flex-col justify-center items-center border border-gray-200">
+          <img
+            src="/images/paritechosenLogo-removebg-preview.png"
+            alt="Logo"
+            className="w-16 h-16  object-contain"
+          />
+          <h3 className="font-bold text-gray-800 text-md">PARITE CONSULTS NIG</h3>
+          <p className="text-xs text-gray-600">CAC NO: 2702539</p>
+          <img
+            src="/images/qrcode_www.pariteconsults.com.ng.png" // Make sure this exists in /public/images/
+            alt="QR Code"
+            className="w-20 h-20 object-contain"
+          />
+          <p className="text-xs text-gray-500 ">Scan to save contact</p>
+        </div>
+      </div>
+    </div>
+  </div>
+)} */}
+
 
       {/* Sign-In Modal */}
       {showSignInModal && (
@@ -282,8 +351,11 @@ const Navbar = () => {
           </div>
         </div>
       )}
+
     </>
+    
   );
 };
+
 
 export default Navbar;
