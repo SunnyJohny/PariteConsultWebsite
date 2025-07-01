@@ -115,7 +115,7 @@ const Contact = () => {
 
               <div className="flex items-center">
                 <GoLocation className="text-blue-100 text-2xl mr-4" />
-                <p> muodu quarters, Awka, Anambra State, Nigeria.</p>
+                <p> Umuodu quarters, Awka, Anambra State, Nigeria.</p>
               </div>
 
               <div className="flex items-center">

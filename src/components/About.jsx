@@ -136,9 +136,9 @@ const AboutUs = () => {
   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
     {[
       {
-        name: "Sir Dr. Charles Mbelede",
+        name: "Sir Engr. Charles Mbelede",
         title: "KSM,JP,FNSE",
-        phone: "",
+        phone: "08055237344",
         image: "/images/SirDr.Charles.jpg",
         quote:
           "PARITE CONSULTS NIG delivered beyond expectations. Their professionalism and integrity made our collaboration seamless and rewarding.",

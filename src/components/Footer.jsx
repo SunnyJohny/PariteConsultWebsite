@@ -48,7 +48,7 @@ const Footer = () => {
             <h2 className="text-xl font-bold mb-4">Contact Us</h2>
             <p>Email: odinakaikwueme@yahoo.com</p>
             <p>Phone: 08037668773 07083944442</p>
-            <p>Address: muodu quarters, Awka, Anambra State, Nigeria.</p>
+            <p>Address: Umuodu quarters, Awka, Anambra State, Nigeria.</p>
           </div>
 
           {/* Quick Links */}
