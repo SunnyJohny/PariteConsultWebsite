@@ -39,10 +39,10 @@ const Navbar = () => {
     return;
   }
 
-  // if (path === "business-card") {
-  //   setShowBusinessCard(true);
-  //   return;
-  // }
+  if (path === "business-card") {
+    setShowBusinessCard(true);
+    return;
+  }
 
   const target = document.getElementById(path);
   if (target) {
@@ -235,7 +235,7 @@ const Navbar = () => {
           </div>
         </nav>
       </header>
-      {/* {showBusinessCard && (
+{/* {showBusinessCard && (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
     <div className="bg-white p-6 rounded-md w-[95%] md:w-[800px] relative max-h-screen overflow-auto">
       <button
@@ -245,9 +245,8 @@ const Navbar = () => {
         ✖
       </button>
 
-    
-      <div className="flex flex-col md:flex-row gap-6 items-center justify-center bg-gray-100 min-h-fit">
-        
+      <div className="flex flex-col md:flex-row gap-6 items-center justify-center bg-gray-100 min-h-fit mb-6">
+       
         <div className="bg-white w-[350px] h-[200px] shadow-xl rounded-lg p-4 flex flex-col justify-between border border-gray-200">
           <div className="flex items-center gap-2">
             <img
@@ -256,8 +255,9 @@ const Navbar = () => {
               className="w-16 h-16 object-contain"
             />
             <div>
-              <h2 className="text-lg font-bold text-gray-800">Arc. Ikwueme Odinaka F.(KSM)</h2>
-              
+              <h2 className="text-lg font-bold text-gray-800">
+                Arc. Ikwueme Odinaka F.(KSM)
+              </h2>
             </div>
           </div>
           <div className="text-sm text-gray-700 mt-2 space-y-1">
@@ -265,33 +265,83 @@ const Navbar = () => {
             <p>✉️ odinakaikwueme@yahoo.com</p>
             <p>📍 Umuodu Quarters, Awka, Anambra State</p>
           </div>
-      <div className="mt-2 text-sm font-medium px-2 py-1 rounded" style={{ backgroundColor: '#1f2937', color: 'white' }}>
-  🌐 www.pariteconsults.com.ng
-</div>
-
-
+          <div
+            className="mt-2 text-sm font-medium px-2 py-1 rounded"
+            style={{ backgroundColor: "#1f2937", color: "white" }}
+          >
+            🌐 www.pariteconsults.com.ng
+          </div>
         </div>
 
-        
+       
         <div className="bg-white w-[350px] h-[200px] shadow-xl rounded-lg p-4 flex flex-col justify-center items-center border border-gray-200">
           <img
             src="/images/paritechosenLogo-removebg-preview.png"
             alt="Logo"
-            className="w-16 h-16  object-contain"
+            className="w-16 h-16 object-contain"
           />
-          <h3 className="font-bold text-gray-800 text-md">PARITE CONSULTS NIG</h3>
+          <h3 className="font-bold text-gray-800 text-md">
+            PARITE CONSULTS NIG
+          </h3>
           <p className="text-xs text-gray-600">CAC NO: 2702539</p>
           <img
-            src="/images/qrcode_www.pariteconsults.com.ng.png" // Make sure this exists in /public/images/
+            src="/images/qrcode_www.pariteconsults.com.ng.png"
             alt="QR Code"
-            className="w-20 h-20 object-contain"
+            className="w-20 h-20 object-contain mt-2"
           />
-          <p className="text-xs text-gray-500 ">Scan to save contact</p>
+          <p className="text-xs text-gray-500">Scan to save contact</p>
         </div>
       </div>
+
+      <div className="w-full border border-gray-300 rounded-md shadow-sm p-4 bg-white mt-6">
+  
+  <div className="flex items-start justify-between border-b pb-3">
+   
+    <div className="flex items-start gap-4">
+      <img
+        src="/images/paritechosenLogo-removebg-preview.png"
+        alt="Parite Logo"
+        className="w-24 h-24 object-contain mt-[-8px]" // bigger and lifted
+      />
+      <div>
+        <h1 className="text-2xl font-bold text-gray-800 uppercase">
+          Parite Consults Nig
+        </h1>
+         <p className="text-xs text-gray-600 italic tracking-wide">
+      CAC No: 2702539
+    </p>
+        <ul className="text-sm text-gray-600 leading-tight list-disc ml-4 mt-2">
+          <li>Architectural Planning & Design</li>
+          <li>Building Construction & Supervision</li>
+          <li>Consultancy & Permit Processing</li>
+          <li>...and more</li>
+        </ul>
+      </div>
+    </div>
+
+    
+    <div className="text-right text-sm text-gray-700 space-y-1">
+      <p>📍 Umuodu Quarters, Awka, Anambra State</p>
+      <p>📞 08037668773 | 07082044442</p>
+      <p>✉️ odinakaikwueme@yahoo.com</p>
+      <p>🌐 www.pariteconsults.com.ng</p>
+    </div>
+  </div>
+
+  
+  <div className="pt-4 text-base text-gray-700 space-y-2">
+    <p><span className="font-semibold">Date:</span> ________________________</p>
+    <p><span className="font-semibold">To:</span> ________________________</p>
+  
+  
+
+  </div>
+</div>
+
     </div>
   </div>
 )} */}
+
 
 
       {/* Sign-In Modal */}
